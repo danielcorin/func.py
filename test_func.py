@@ -149,10 +149,22 @@ class TestFuncFunctions(unittest.TestCase):
 		# no element is even
 		self.assertFalse(some(lambda x: x%2==0, []))
 
+	def test_contains(self):
+		self.assertTrue(contains([2,3,5], 3))
+		self.assertTrue(contains([(2,3),3,5], (2,3)))
+		self.assertFalse(contains([False, []], [1]))
+		self.assertTrue(contains([False, [1]], [1]))
+
 	def test_pluck(self):
 		# get list of bands' countries
 		countries = pluck(self.bands, 'country')
 		self.assertEqual(countries, [b.get('country') for b in self.bands])
+
+	def test_compact(self):
+		li = [[], {}, False, True, 1, [2]]
+		for_li = [l for l in li if bool(l)]
+		compact_li = compact(li)
+		self.assertEqual(for_li, compact_li)
 
 if __name__ == '__main__':
 	unittest.main()

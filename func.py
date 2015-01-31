@@ -31,6 +31,14 @@ def last(data):
 def rest(data):
 	return data[1:]
 
+''' Remove all Falsy values '''
+def compact(data):
+	return filter(lambda x: bool(x), data)
+
+''' Flatten all arrays down to base level '''
+def flatten(data):
+	pass
+
 # Let's recreate Underscore.js in Python
 
 ''' Apply fn to all elements in data '''
@@ -78,6 +86,11 @@ No items => False
 '''
 def some(fn, data):
 	return reduce(lambda a,x: a or fn(x), data, False)
+
+''' Return True is list contains value '''
+def contains(data, value):
+	return value in data
+
 
 ''' Create a list of an attribute for a list of dicts '''
 def pluck(data, key):

@@ -137,7 +137,9 @@ class TestFuncFunctions(unittest.TestCase):
 		self.assertFalse(every(lambda x: x, [True, True, False]))
 		self.assertTrue(every(lambda x: x, [True, True]))
 		# are all numbers even
-		self.assertTrue(every(lambda x: x%2==0, [2, 10, 200]))
+		def even(n):
+			return n%2==0
+		self.assertTrue(every(even, [2, 10, 200]))
 		# every x in [] is true
 		self.assertTrue(every(lambda x: x, []))
 
@@ -165,6 +167,28 @@ class TestFuncFunctions(unittest.TestCase):
 		for_li = [l for l in li if bool(l)]
 		compact_li = compact(li)
 		self.assertEqual(for_li, compact_li)
+
+	def test_partition(self):
+		nums = [1,2,3,4,5,6]
+		def odd(n):
+			return n%2==1
+		odds = [n for n in nums if odd(n)]
+		evens = [n for n in nums if not odd(n)]
+		manual = [odds, evens]
+
+		partitioned = partition(odd, nums)
+
+		self.assertEqual(manual, partitioned)
+
+	def test_flatten(self):
+		f = [1,[2]]
+		flat_f = flatten(f)
+		self.assertEqual(flat_f, [1,2])
+
+		f = [1, 2, [3, 4, [5, [6]]], [2]]
+		flat_f = flatten(f)
+
+		self.assertEqual(flat_f, [1,2,3,4,5,6,2])
 
 if __name__ == '__main__':
 	unittest.main()

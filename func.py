@@ -35,9 +35,35 @@ def rest(data):
 def compact(data):
 	return filter(lambda x: bool(x), data)
 
+def flatten_once(arr_in, flat_arr):
+	if not arr_in:
+		return flat_arr
+	f = first(arr_in)
+	if isinstance(f, list):
+		flat_arr.extend(f)
+	else:
+		flat_arr.append(f)
+	return flatten_once(rest(arr_in), flat_arr)
+
+def has_list(arr):
+	if not arr:
+		return False
+	f = first(arr)
+	if isinstance(f, list):
+		return True
+	return has_list(rest(arr))
+
 ''' Flatten all arrays down to base level '''
 def flatten(data):
-	pass
+	if has_list(data):
+		data = flatten_once(data, [])
+		return flatten(data)
+	else:
+		return data
+	
+''' Split array into two array seperated by fn return value '''
+def partition(fn, data):
+	return [filter(lambda x: fn(x), data), reject(fn, data)]
 
 # Let's recreate Underscore.js in Python
 
@@ -87,7 +113,7 @@ No items => False
 def some(fn, data):
 	return reduce(lambda a,x: a or fn(x), data, False)
 
-''' Return True is list contains value '''
+''' Return True if list contains value '''
 def contains(data, value):
 	return value in data
 
